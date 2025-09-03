@@ -29,7 +29,8 @@
     "@angular/platform-browser": "^20.2.0",
     "@angular/router": "^20.2.0",
     "@primeuix/themes": "^1.2.3",
-    "primeng": "^20.1.0",
+    "primeicons": "^7.0.0",
+    "primeng": "^20.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
