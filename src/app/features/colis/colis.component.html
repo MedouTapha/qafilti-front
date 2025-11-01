@@ -6,11 +6,11 @@
 <div class="mb-3">
   <span class="p-input-icon-left" style="width: 100%;">
     <i class="pi pi-search"></i>
-    <input pInputText [(ngModel)]="globalFilter" placeholder="Rechercher (code, expéditeur, destinataire, ville, statut)..." [style]="{width:'100%'}" />
+    <input pInputText (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Rechercher (code, expéditeur, destinataire, ville, statut)..." [style]="{width:'100%'}" />
   </span>
 </div>
 
-<p-table [value]="colis()" [paginator]="true" [rows]="10" [globalFilterFields]="['code','expediteur','destinataire','villeDepart','villeArrivee','telephoneExpediteur','telephoneDestinataire','statut']" [filters]="{ 'global': { value: globalFilter, matchMode: 'contains' } }">
+<p-table #dt [value]="colis()" [paginator]="true" [rows]="10" [globalFilterFields]="['code','expediteur','destinataire','villeDepart','villeArrivee','telephoneExpediteur','telephoneDestinataire','statut']">
   <ng-template pTemplate="header">
     <tr><th>Code</th><th>Trajet</th><th>Expéditeur</th><th>Destinataire</th><th>Poids/Volume</th><th>Tarif</th><th>Statut</th><th>Actions</th></tr>
   </ng-template>

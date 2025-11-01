@@ -74,7 +74,6 @@ export class ReservationsComponent {
   dialog = false;
   currentId: number | string | null | undefined = null;
   form: Partial<Reservation> = {};
-  globalFilter = '';
   ticketToPrint?: Reservation;
 
   openNew() {

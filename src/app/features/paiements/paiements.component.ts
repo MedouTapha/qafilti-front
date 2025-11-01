@@ -21,9 +21,6 @@ export class PaiementsComponent {
   // Use service signals directly
   readonly paiements = this.paiementsService.paiements;
 
-  // Search filter
-  paiementFilter = '';
-
   test() {
     console.log('test');
   }
