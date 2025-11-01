@@ -16,7 +16,13 @@
   </div>
   <div class="col-12">
     <p-card header="Revenus par trajet (mock)">
-      <p-table [value]="revenusTrajets()">
+      <div class="mb-3">
+        <span class="p-input-icon-left" style="width: 100%;">
+          <i class="pi pi-search"></i>
+          <input pInputText [(ngModel)]="rapportFilter" placeholder="Rechercher (trajet)..." [style]="{width:'100%'}" />
+        </span>
+      </div>
+      <p-table [value]="revenusTrajets()" [globalFilterFields]="['trajet']" [filters]="{ 'global': { value: rapportFilter, matchMode: 'contains' } }">
         <ng-template pTemplate="header">
           <tr><th>Trajet</th><th>Réservations</th><th>Revenu (MRU)</th></tr>
         </ng-template>

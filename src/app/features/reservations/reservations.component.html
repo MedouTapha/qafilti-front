@@ -1,9 +1,13 @@
 <div class="flex justify-content-between align-items-center mb-3">
   <h2 class="m-0">Réservations</h2>
-  <div class="flex gap-2">
-    <input pInputText [(ngModel)]="globalFilter" placeholder="Rechercher..." />
-    <button pButton label="Nouvelle" (click)="openNew()"></button>
-  </div>
+  <button pButton label="Nouvelle Réservation" icon="pi pi-plus" (click)="openNew()"></button>
+</div>
+
+<div class="mb-3">
+  <span class="p-input-icon-left" style="width: 100%;">
+    <i class="pi pi-search"></i>
+    <input pInputText [(ngModel)]="globalFilter" placeholder="Rechercher (code, passager, trajet, statut)..." [style]="{width:'100%'}" />
+  </span>
 </div>
 
 <p-table [value]="reservations()" [paginator]="true" [rows]="10" [globalFilterFields]="['code','passager','trajet','statut']" [filters]="{ 'global': { value: globalFilter, matchMode: 'contains' } }">
