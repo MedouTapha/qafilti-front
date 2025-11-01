@@ -7,7 +7,12 @@ export interface Colis {
   code: string;
   expediteur: string;
   destinataire: string;
+  telephoneExpediteur?: string;
+  telephoneDestinataire?: string;
   poids: number;
+  volume?: number; // Volume en m³ ou litres
+  villeDepart?: string; // Ville de départ
+  villeArrivee?: string; // Ville d'arrivée
   tarif: number;
   statut: 'En transit' | 'Livré';
 }
@@ -62,7 +67,7 @@ export class ColisService {
 
   create(colis: Omit<Colis, 'id' | 'code'>): Colis {
     const id = this.generateId();
-    const code = this.generateCode(id);
+    const code = this.generateCode(id, colis.villeDepart, colis.villeArrivee);
     const newColis: Colis = { id, code, ...colis };
     this._colis.update(colis => [newColis, ...colis]);
     return newColis;
@@ -96,7 +101,21 @@ export class ColisService {
     return ids.length ? Math.max(...ids) + 1 : 1;
   }
 
-  private generateCode(id: number): string {
-    return `CLS-${id.toString().padStart(4, '0')}`;
+  private generateCode(id: number, villeDepart?: string, villeArrivee?: string): string {
+    // Format: CLS-[DEPART]-[ARRIVEE]-[ID]
+    // Example: CLS-NDB-NKT-0001 (Nouadhibou -> Nouakchott)
+    const departCode = villeDepart ? this.getCityCode(villeDepart) : 'XXX';
+    const arriveeCode = villeArrivee ? this.getCityCode(villeArrivee) : 'XXX';
+    return `CLS-${departCode}-${arriveeCode}-${id.toString().padStart(4, '0')}`;
+  }
+
+  // Extract 3-letter city code from city name
+  private getCityCode(cityName: string): string {
+    const normalized = cityName.trim().toUpperCase();
+    // Extract first 3 letters or use abbreviation
+    if (normalized.length >= 3) {
+      return normalized.substring(0, 3);
+    }
+    return normalized.padEnd(3, 'X');
   }
 }

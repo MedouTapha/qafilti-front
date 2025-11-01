@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,6 +9,7 @@ import { TagModule } from 'primeng/tag';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ColisService, Colis } from '../../core/services/colis.service';
+import { CitiesService } from '../../core/services/cities.service';
 
 @Component({
   standalone: true,
@@ -19,9 +20,15 @@ import { ColisService, Colis } from '../../core/services/colis.service';
 })
 export class ColisComponent {
   private readonly colisService = inject(ColisService);
+  private readonly citiesService = inject(CitiesService);
 
   // Use service signals directly
   readonly colis = this.colisService.colis;
+
+  // City options for dropdowns
+  readonly cityOptions = computed(() =>
+    this.citiesService.cities().map(c => ({ label: c.nameFr || c.nameAr || c.id, value: c.nameFr || c.nameAr || c.id }))
+  );
 
   dialog = false;
   currentId: number | null = null;
@@ -31,7 +38,18 @@ export class ColisComponent {
 
   openNew() {
     this.currentId = null;
-    this.form = { statut: 'En transit', poids: 0, tarif: 0, expediteur: '', destinataire: '' };
+    this.form = {
+      statut: 'En transit',
+      poids: 0,
+      volume: 0,
+      tarif: 0,
+      expediteur: '',
+      destinataire: '',
+      telephoneExpediteur: '',
+      telephoneDestinataire: '',
+      villeDepart: '',
+      villeArrivee: ''
+    };
     this.dialog = true;
   }
 
@@ -51,7 +69,12 @@ export class ColisComponent {
         this.colisService.create({
           expediteur: this.form.expediteur,
           destinataire: this.form.destinataire,
+          telephoneExpediteur: this.form.telephoneExpediteur,
+          telephoneDestinataire: this.form.telephoneDestinataire,
           poids: this.form.poids,
+          volume: this.form.volume,
+          villeDepart: this.form.villeDepart,
+          villeArrivee: this.form.villeArrivee,
           tarif: this.form.tarif,
           statut: this.form.statut
         });

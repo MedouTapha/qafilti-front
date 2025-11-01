@@ -6,16 +6,23 @@
   </div>
 </div>
 
-<p-table [value]="colis()" [paginator]="true" [rows]="10" [globalFilterFields]="['code','expediteur','destinataire','statut']" [filters]="{ 'global': { value: globalFilter, matchMode: 'contains' } }">
+<p-table [value]="colis()" [paginator]="true" [rows]="10" [globalFilterFields]="['code','expediteur','destinataire','villeDepart','villeArrivee','statut']" [filters]="{ 'global': { value: globalFilter, matchMode: 'contains' } }">
   <ng-template pTemplate="header">
-    <tr><th>Code</th><th>Expéditeur</th><th>Destinataire</th><th>Poids (kg)</th><th>Tarif</th><th>Statut</th><th>Actions</th></tr>
+    <tr><th>Code</th><th>Trajet</th><th>Expéditeur</th><th>Destinataire</th><th>Poids/Volume</th><th>Tarif</th><th>Statut</th><th>Actions</th></tr>
   </ng-template>
   <ng-template pTemplate="body" let-c>
     <tr>
       <td>{{ c.code }}</td>
-      <td>{{ c.expediteur }}</td>
-      <td>{{ c.destinataire }}</td>
-      <td>{{ c.poids }}</td>
+      <td>{{ c.villeDepart || '-' }} → {{ c.villeArrivee || '-' }}</td>
+      <td>
+        {{ c.expediteur }}<br/>
+        <small>{{ c.telephoneExpediteur || '-' }}</small>
+      </td>
+      <td>
+        {{ c.destinataire }}<br/>
+        <small>{{ c.telephoneDestinataire || '-' }}</small>
+      </td>
+      <td>{{ c.poids }}kg<span *ngIf="c.volume"> / {{ c.volume }}m³</span></td>
       <td>{{ c.tarif }} MRU</td>
       <td><p-tag [value]="c.statut" [severity]="c.statut==='Livré' ? 'success' : 'warning'"/></td>
       <td class="flex gap-2">
@@ -27,13 +34,56 @@
   </ng-template>
 </p-table>
 
-<p-dialog [(visible)]="dialog" header="Colis" [modal]="true" [style]="{width:'420px'}">
-  <div class="flex flex-column gap-2">
-    <input pInputText placeholder="Expéditeur" [(ngModel)]="form.expediteur" [style]="{width:'100%'}" />
-    <input pInputText placeholder="Destinataire" [(ngModel)]="form.destinataire" [style]="{width:'100%'}" />
-    <p-inputNumber placeholder="Poids (kg)" [(ngModel)]="form.poids" [style]="{width:'100%'}"></p-inputNumber>
-    <p-inputNumber placeholder="Tarif (MRU)" [(ngModel)]="form.tarif" [style]="{width:'100%'}"></p-inputNumber>
-    <p-select [options]="statuts" optionLabel="label" optionValue="value" [(ngModel)]="form.statut" [style]="{width:'100%'}"></p-select>
+<p-dialog [(visible)]="dialog" header="Colis" [modal]="true" [style]="{width:'520px'}">
+  <div class="flex flex-column gap-3">
+    <div class="grid">
+      <div class="col-6">
+        <label>Ville de Départ</label>
+        <p-select [options]="cityOptions()" optionLabel="label" optionValue="value" [(ngModel)]="form.villeDepart" placeholder="Sélectionner" [style]="{width:'100%'}"></p-select>
+      </div>
+      <div class="col-6">
+        <label>Ville d'Arrivée</label>
+        <p-select [options]="cityOptions()" optionLabel="label" optionValue="value" [(ngModel)]="form.villeArrivee" placeholder="Sélectionner" [style]="{width:'100%'}"></p-select>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-6">
+        <label>Expéditeur</label>
+        <input pInputText placeholder="Nom" [(ngModel)]="form.expediteur" [style]="{width:'100%'}" />
+      </div>
+      <div class="col-6">
+        <label>Téléphone Expéditeur</label>
+        <input pInputText placeholder="222-XX-XX-XX-XX" [(ngModel)]="form.telephoneExpediteur" [style]="{width:'100%'}" />
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-6">
+        <label>Destinataire</label>
+        <input pInputText placeholder="Nom" [(ngModel)]="form.destinataire" [style]="{width:'100%'}" />
+      </div>
+      <div class="col-6">
+        <label>Téléphone Destinataire</label>
+        <input pInputText placeholder="222-XX-XX-XX-XX" [(ngModel)]="form.telephoneDestinataire" [style]="{width:'100%'}" />
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-4">
+        <label>Poids (kg)</label>
+        <p-inputNumber placeholder="Poids" [(ngModel)]="form.poids" [style]="{width:'100%'}"></p-inputNumber>
+      </div>
+      <div class="col-4">
+        <label>Volume (m³)</label>
+        <p-inputNumber placeholder="Volume" [(ngModel)]="form.volume" [style]="{width:'100%'}" [minFractionDigits]="2"></p-inputNumber>
+      </div>
+      <div class="col-4">
+        <label>Tarif (MRU)</label>
+        <p-inputNumber placeholder="Tarif" [(ngModel)]="form.tarif" [style]="{width:'100%'}"></p-inputNumber>
+      </div>
+    </div>
+    <div>
+      <label>Statut</label>
+      <p-select [options]="statuts" optionLabel="label" optionValue="value" [(ngModel)]="form.statut" [style]="{width:'100%'}"></p-select>
+    </div>
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="dialog=false" text></button>

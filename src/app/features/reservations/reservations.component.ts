@@ -79,7 +79,15 @@ export class ReservationsComponent {
 
   openNew() {
     this.currentId = null;
-    this.form = { date: new Date(), statut: 'En attente', prix: 0, passager: '', trajet: '' };
+    this.form = {
+      dateReservation: new Date(),
+      dateDepart: new Date(),
+      date: new Date(), // Legacy
+      statut: 'En attente',
+      prix: 0,
+      passager: '',
+      trajet: ''
+    };
     this.dialog = true;
   }
 
@@ -87,7 +95,9 @@ export class ReservationsComponent {
     this.currentId = r.id || r.reservationId;
     this.form = {
       ...r,
-      date: r.date ? (typeof r.date === 'string' ? new Date(r.date) : r.date) : undefined
+      date: r.date ? (typeof r.date === 'string' ? new Date(r.date) : r.date) : undefined,
+      dateReservation: r.dateReservation ? (typeof r.dateReservation === 'string' ? new Date(r.dateReservation) : r.dateReservation) : undefined,
+      dateDepart: r.dateDepart ? (typeof r.dateDepart === 'string' ? new Date(r.dateDepart) : r.dateDepart) : undefined
     };
     this.dialog = true;
   }
@@ -98,7 +108,7 @@ export class ReservationsComponent {
       this.reservationsService.update(this.currentId, this.form);
     } else {
       // Create new
-      if (this.form.passager && this.form.trajet && this.form.date && this.form.prix !== undefined && this.form.statut) {
+      if (this.form.passager && this.form.trajet && this.form.dateDepart && this.form.prix !== undefined && this.form.statut) {
         // Trouver le nom du passager à partir de son ID
         const passagerId = parseInt(this.form.passager);
         const passager = this.passagersService.passagers().find(p => p.id === passagerId);
@@ -107,7 +117,9 @@ export class ReservationsComponent {
         this.reservationsService.create({
           passager: passagerNom,
           trajet: this.form.trajet,
-          date: this.form.date,
+          date: this.form.dateDepart, // Legacy field
+          dateReservation: this.form.dateReservation || new Date(),
+          dateDepart: this.form.dateDepart,
           prix: this.form.prix,
           statut: this.form.statut,
           telephone1: this.form.telephone1,

@@ -14,6 +14,7 @@ import { BusService, Bus } from '../../core/services/bus.service';
 import { CitiesService, City } from '../../core/services/cities.service';
 import { TripsService, Trip } from '../../core/services/trips.service';
 import { ReservationsService, Reservation } from '../../core/services/reservations.service';
+import { SettingsService } from '../../core/services/settings.service';
 
 @Component({
   selector: 'app-admin',
@@ -29,7 +30,8 @@ export class AdminComponent implements OnInit {
   private readonly busService = inject(BusService);
   private readonly citiesService = inject(CitiesService);
   private readonly tripsService = inject(TripsService);
-    private readonly reservationsService = inject(ReservationsService);
+  private readonly reservationsService = inject(ReservationsService);
+  private readonly settingsService = inject(SettingsService);
 
   // Active tab management
   readonly activeTab = signal<number>(0);
@@ -49,7 +51,8 @@ export class AdminComponent implements OnInit {
       'villes': 1,
       'trips': 2,
       'trajets': 3,
-      'tarifs': 4
+      'tarifs': 4,
+      'parametres': 5
     };
     return tabName ? (tabMap[tabName] ?? 0) : 0;
   }
@@ -100,6 +103,19 @@ export class AdminComponent implements OnInit {
   readonly trajetOptions = computed(() =>
     this.trajets().map(t => ({ label: `${t.code} - ${t.origine} → ${t.destination}`, value: t.code }))
   );
+
+  // Settings
+  readonly passengerIdentifierLabel = this.settingsService.passengerIdentifierLabel;
+  selectedIdentifierType = this.settingsService.passengerIdentifierType();
+  identifierTypeOptions = [
+    { label: 'NNI uniquement', value: 'NNI' },
+    { label: 'Passport uniquement', value: 'Passport' },
+    { label: 'NNI ou Passport (les deux)', value: 'Both' }
+  ];
+
+  onIdentifierTypeChange(): void {
+    this.settingsService.setPassengerIdentifierType(this.selectedIdentifierType as 'NNI' | 'Passport' | 'Both');
+  }
 
   // Trajets
   trajetDialog = false;

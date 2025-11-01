@@ -13,7 +13,9 @@ export interface Reservation {
   telephone1?: string;
   telephone2?: string;
   trajet?: string;
-  date?: Date | string;
+  dateReservation?: Date | string; // Date de réservation
+  dateDepart?: Date | string; // Date de départ
+  date?: Date | string; // Legacy field for compatibility
   prix?: number;
   netAmount?: number;
   seatNumber?: string;
@@ -65,6 +67,8 @@ export class ReservationsService {
             passager: r.passager || r.passengerName || '',
             trajet: r.trajet || r.tripId || 'Trajet à définir',
             date: r.date || r.createdAt || new Date().toISOString(),
+            dateReservation: r.dateReservation || r.createdAt || new Date().toISOString(),
+            dateDepart: r.dateDepart || r.date || new Date().toISOString(),
             prix: r.prix ?? r.netAmount ?? 0,
             statut: this.mapStatus(r.status || r.statut),
             // Keep original fields for compatibility
