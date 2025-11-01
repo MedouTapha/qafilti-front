@@ -5,6 +5,7 @@
     <p-tab [value]="2" label="Trips"></p-tab>
     <p-tab [value]="3" label="Trajets"></p-tab>
     <p-tab [value]="4" label="Tarifs"></p-tab>
+    <p-tab [value]="5" label="Paramètres"></p-tab>
   </p-tablist>
   <p-tabpanels>
     <!-- Bus Tab -->
@@ -128,6 +129,42 @@
           </tr>
         </ng-template>
       </p-table>
+    </p-tabpanel>
+
+    <!-- Settings Tab -->
+    <p-tabpanel [value]="5">
+      <div class="mb-3">
+        <h3 class="m-0 mb-3">Paramètres de l'Application</h3>
+
+        <div class="card p-3 mb-3">
+          <h4 class="mt-0">Type d'Identifiant des Passagers</h4>
+          <p class="text-gray-600">Choisissez le type d'identifiant à utiliser pour les passagers.</p>
+
+          <div class="flex flex-column gap-2">
+            <label class="block mb-2 font-semibold">Type d'Identifiant</label>
+            <p-select
+              [options]="identifierTypeOptions"
+              optionLabel="label"
+              optionValue="value"
+              [(ngModel)]="selectedIdentifierType"
+              (onChange)="onIdentifierTypeChange()"
+              [style]="{width:'300px'}">
+            </p-select>
+
+            <small class="text-gray-500 mt-2">
+              • NNI : Numéro National d'Identité uniquement<br/>
+              • Passport : Numéro de passeport uniquement<br/>
+              • Les deux : NNI ou Passeport (valeur par défaut)
+            </small>
+          </div>
+
+          <div class="mt-3">
+            <p class="text-sm">
+              <strong>Label actuel :</strong> {{ passengerIdentifierLabel() }}
+            </p>
+          </div>
+        </div>
+      </div>
     </p-tabpanel>
   </p-tabpanels>
 </p-tabs>

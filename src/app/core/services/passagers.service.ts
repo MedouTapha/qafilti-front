@@ -6,6 +6,7 @@ export interface Passager {
   id: number;
   nom: string;
   telephone: string;
+  nniPassport?: string; // NNI ou Passport (alphanumeric)
 }
 
 @Injectable({ providedIn: 'root' })

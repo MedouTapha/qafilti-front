@@ -5,6 +5,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { PassagersService, Passager } from '../../core/services/passagers.service';
+import { SettingsService } from '../../core/services/settings.service';
 
 @Component({
   standalone: true,
@@ -15,9 +16,11 @@ import { PassagersService, Passager } from '../../core/services/passagers.servic
 })
 export class PassagersComponent {
   private readonly passagersService = inject(PassagersService);
+  private readonly settingsService = inject(SettingsService);
 
   // Use service signals directly in the template
   readonly passagers = this.passagersService.passagers;
+  readonly passengerIdentifierLabel = this.settingsService.passengerIdentifierLabel;
 
   form: Partial<Passager> = {};
   filter = '';
@@ -45,7 +48,8 @@ export class PassagersComponent {
       if (this.form.nom && this.form.telephone) {
         this.passagersService.create({
           nom: this.form.nom,
-          telephone: this.form.telephone
+          telephone: this.form.telephone,
+          nniPassport: this.form.nniPassport
         });
       }
     }

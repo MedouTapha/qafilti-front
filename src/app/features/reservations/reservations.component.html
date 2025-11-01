@@ -9,7 +9,7 @@
 <p-table [value]="reservations()" [paginator]="true" [rows]="10" [globalFilterFields]="['code','passager','trajet','statut']" [filters]="{ 'global': { value: globalFilter, matchMode: 'contains' } }">
   <ng-template pTemplate="header">
     <tr>
-      <th>Code</th><th>Passager</th><th>Trajet</th><th>Date</th><th>Prix</th><th>Statut</th><th>Actions</th>
+      <th>Code</th><th>Passager</th><th>Trajet</th><th>Date Réservation</th><th>Date Départ</th><th>Prix</th><th>Statut</th><th>Actions</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-r>
@@ -17,7 +17,8 @@
       <td>{{ r.code }}</td>
       <td>{{ r.passager }}</td>
       <td>{{ r.trajet }}</td>
-      <td>{{ r.date | date:'shortDate' }}</td>
+      <td>{{ r.dateReservation | date:'dd-MM-yyyy' }}</td>
+      <td>{{ r.dateDepart | date:'dd-MM-yyyy' }}</td>
       <td>{{ r.prix | number:'1.2-2' }} MRU</td>
       <td><p-tag [value]="r.statut" [severity]="r.statut==='Validée' ? 'success' : 'warning'"/></td>
       <td class="flex gap-2">
@@ -83,10 +84,16 @@
     </div>
     <div class="grid">
       <div class="col-6">
-        <label>Date</label>
-        <p-datepicker [(ngModel)]="form.date" dateFormat="dd/mm/yy" [style]="{width:'100%'}"></p-datepicker>
+        <label>Date de Réservation</label>
+        <p-datepicker [(ngModel)]="form.dateReservation" dateFormat="dd/mm/yy" [style]="{width:'100%'}"></p-datepicker>
       </div>
       <div class="col-6">
+        <label>Date de Départ</label>
+        <p-datepicker [(ngModel)]="form.dateDepart" dateFormat="dd/mm/yy" [style]="{width:'100%'}"></p-datepicker>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-12">
         <label>Prix</label>
         <p-inputNumber [(ngModel)]="form.prix" mode="currency" currency="MRU" [style]="{width:'100%'}"></p-inputNumber>
       </div>
