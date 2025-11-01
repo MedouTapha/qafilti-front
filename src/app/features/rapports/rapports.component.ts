@@ -19,7 +19,4 @@ export class RapportsComponent {
   // Use service signals directly
   readonly kpis = this.rapportsService.kpis;
   readonly revenusTrajets = this.rapportsService.revenueByRoute;
-
-  // Search filter
-  rapportFilter = '';
 }

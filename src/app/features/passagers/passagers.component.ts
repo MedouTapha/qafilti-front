@@ -23,7 +23,6 @@ export class PassagersComponent {
   readonly passengerIdentifierLabel = this.settingsService.passengerIdentifierLabel;
 
   form: Partial<Passager> = {};
-  filter = '';
   dialog = false;
   currentId: number | null = null;
 

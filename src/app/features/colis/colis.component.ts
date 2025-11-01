@@ -33,7 +33,6 @@ export class ColisComponent {
   dialog = false;
   currentId: number | null = null;
   form: Partial<Colis> = {};
-  globalFilter = '';
   statuts = [{ label: 'En transit', value: 'En transit' }, { label: 'Livré', value: 'Livré' }];
 
   openNew() {

@@ -117,13 +117,6 @@ export class AdminComponent implements OnInit {
     this.settingsService.setPassengerIdentifierType(this.selectedIdentifierType as 'NNI' | 'Passport' | 'Both');
   }
 
-  // Search filters for each table
-  busFilter = '';
-  cityFilter = '';
-  tripFilter = '';
-  trajetFilter = '';
-  tarifFilter = '';
-
   // Trajets
   trajetDialog = false;
   currentTrajetId: number | null | undefined = null;

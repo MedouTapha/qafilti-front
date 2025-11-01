@@ -19,10 +19,10 @@
       <div class="mb-3">
         <span class="p-input-icon-left" style="width: 100%;">
           <i class="pi pi-search"></i>
-          <input pInputText [(ngModel)]="rapportFilter" placeholder="Rechercher (trajet)..." [style]="{width:'100%'}" />
+          <input pInputText (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Rechercher (trajet)..." [style]="{width:'100%'}" />
         </span>
       </div>
-      <p-table [value]="revenusTrajets()" [globalFilterFields]="['trajet']" [filters]="{ 'global': { value: rapportFilter, matchMode: 'contains' } }">
+      <p-table #dt [value]="revenusTrajets()" [globalFilterFields]="['trajet']">
         <ng-template pTemplate="header">
           <tr><th>Trajet</th><th>Réservations</th><th>Revenu (MRU)</th></tr>
         </ng-template>
