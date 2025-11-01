@@ -10,11 +10,17 @@
   <p-tabpanels>
     <!-- Bus Tab -->
     <p-tabpanel [value]="0">
-      <div class="flex justify-content-between align-items-center mb-2">
+      <div class="flex justify-content-between align-items-center mb-3">
         <h3 class="m-0">Bus</h3>
-        <button pButton label="Ajouter" (click)="openBus()"></button>
+        <button pButton label="Nouveau Bus" icon="pi pi-plus" (click)="openBus()"></button>
       </div>
-      <p-table [value]="buses()" [paginator]="true" [rows]="10">
+      <div class="mb-3">
+        <span class="p-input-icon-left" style="width: 100%;">
+          <i class="pi pi-search"></i>
+          <input pInputText [(ngModel)]="busFilter" placeholder="Rechercher (ID, immatriculation, statut, capacité)..." [style]="{width:'100%'}" />
+        </span>
+      </div>
+      <p-table [value]="buses()" [paginator]="true" [rows]="10" [globalFilterFields]="['id','license_plate','status']" [filters]="{ 'global': { value: busFilter, matchMode: 'contains' } }">
         <ng-template pTemplate="header">
           <tr><th>ID</th><th>Immatriculation</th><th>Statut</th><th>Capacité</th><th>Actions</th></tr>
         </ng-template>
@@ -35,11 +41,17 @@
 
     <!-- Cities Tab -->
     <p-tabpanel [value]="1">
-      <div class="flex justify-content-between align-items-center mb-2">
+      <div class="flex justify-content-between align-items-center mb-3">
         <h3 class="m-0">Villes</h3>
-        <button pButton label="Ajouter" (click)="openCity()"></button>
+        <button pButton label="Nouvelle Ville" icon="pi pi-plus" (click)="openCity()"></button>
       </div>
-      <p-table [value]="cities()" [paginator]="true" [rows]="10">
+      <div class="mb-3">
+        <span class="p-input-icon-left" style="width: 100%;">
+          <i class="pi pi-search"></i>
+          <input pInputText [(ngModel)]="cityFilter" placeholder="Rechercher (ID, nom français, nom arabe)..." [style]="{width:'100%'}" />
+        </span>
+      </div>
+      <p-table [value]="cities()" [paginator]="true" [rows]="10" [globalFilterFields]="['id','nameFr','nameAr']" [filters]="{ 'global': { value: cityFilter, matchMode: 'contains' } }">
         <ng-template pTemplate="header">
           <tr><th>ID</th><th>Nom (FR)</th><th>Nom (AR)</th><th>Actions</th></tr>
         </ng-template>
@@ -59,11 +71,17 @@
 
     <!-- Trips Tab -->
     <p-tabpanel [value]="2">
-      <div class="flex justify-content-between align-items-center mb-2">
+      <div class="flex justify-content-between align-items-center mb-3">
         <h3 class="m-0">Trips (Voyages)</h3>
-        <button pButton label="Ajouter" (click)="openTrip()"></button>
+        <button pButton label="Nouveau Trip" icon="pi pi-plus" (click)="openTrip()"></button>
       </div>
-      <p-table [value]="trips()" [paginator]="true" [rows]="10">
+      <div class="mb-3">
+        <span class="p-input-icon-left" style="width: 100%;">
+          <i class="pi pi-search"></i>
+          <input pInputText [(ngModel)]="tripFilter" placeholder="Rechercher (ID, trajet, départ, arrivée, bus)..." [style]="{width:'100%'}" />
+        </span>
+      </div>
+      <p-table [value]="trips()" [paginator]="true" [rows]="10" [globalFilterFields]="['tripId','date','trajetCode','departureCityName','departureCityId','arrivalCityName','arrivalCityId','vehicleId']" [filters]="{ 'global': { value: tripFilter, matchMode: 'contains' } }">
         <ng-template pTemplate="header">
           <tr><th>ID</th><th>Date</th><th>Trajet</th><th>Départ</th><th>Arrivée</th><th>Bus</th><th>Heures</th><th>Capacité restante</th><th>Actions</th></tr>
         </ng-template>
@@ -88,11 +106,17 @@
 
     <!-- Trajets Tab -->
     <p-tabpanel [value]="3">
-      <div class="flex justify-content-between align-items-center mb-2">
+      <div class="flex justify-content-between align-items-center mb-3">
         <h3 class="m-0">Trajets</h3>
-        <button pButton label="Ajouter" (click)="openTrajet()"></button>
+        <button pButton label="Nouveau Trajet" icon="pi pi-plus" (click)="openTrajet()"></button>
       </div>
-      <p-table [value]="trajets()" [paginator]="true" [rows]="10">
+      <div class="mb-3">
+        <span class="p-input-icon-left" style="width: 100%;">
+          <i class="pi pi-search"></i>
+          <input pInputText [(ngModel)]="trajetFilter" placeholder="Rechercher (code, origine, destination)..." [style]="{width:'100%'}" />
+        </span>
+      </div>
+      <p-table [value]="trajets()" [paginator]="true" [rows]="10" [globalFilterFields]="['code','origine','destination']" [filters]="{ 'global': { value: trajetFilter, matchMode: 'contains' } }">
         <ng-template pTemplate="header">
           <tr><th>Code</th><th>Origine</th><th>Destination</th><th>Actions</th></tr>
         </ng-template>
@@ -110,11 +134,17 @@
       </p-table>
     </p-tabpanel>
     <p-tabpanel [value]="4">
-      <div class="flex justify-content-between align-items-center mb-2">
+      <div class="flex justify-content-between align-items-center mb-3">
         <h3 class="m-0">Tarifs</h3>
-        <button pButton label="Ajouter" (click)="openTarif()"></button>
+        <button pButton label="Nouveau Tarif" icon="pi pi-plus" (click)="openTarif()"></button>
       </div>
-      <p-table [value]="tarifs()" [paginator]="true" [rows]="10">
+      <div class="mb-3">
+        <span class="p-input-icon-left" style="width: 100%;">
+          <i class="pi pi-search"></i>
+          <input pInputText [(ngModel)]="tarifFilter" placeholder="Rechercher (trajet, prix)..." [style]="{width:'100%'}" />
+        </span>
+      </div>
+      <p-table [value]="tarifs()" [paginator]="true" [rows]="10" [globalFilterFields]="['trajet']" [filters]="{ 'global': { value: tarifFilter, matchMode: 'contains' } }">
         <ng-template pTemplate="header">
           <tr><th>Trajet</th><th>Prix (MRU)</th><th>Actions</th></tr>
         </ng-template>

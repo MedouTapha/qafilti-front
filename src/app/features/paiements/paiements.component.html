@@ -1,9 +1,16 @@
 <div class="flex justify-content-between align-items-center mb-3">
   <h2 class="m-0">Paiements</h2>
-  <button pButton label="Enregistrer un paiement" (click)="test()"></button>
+  <button pButton label="Enregistrer un Paiement" icon="pi pi-plus" (click)="test()"></button>
 </div>
 
-<p-table [value]="paiements()" [paginator]="true" [rows]="10">
+<div class="mb-3">
+  <span class="p-input-icon-left" style="width: 100%;">
+    <i class="pi pi-search"></i>
+    <input pInputText [(ngModel)]="paiementFilter" placeholder="Rechercher (réf, type, montant, mode, note)..." [style]="{width:'100%'}" />
+  </span>
+</div>
+
+<p-table [value]="paiements()" [paginator]="true" [rows]="10" [globalFilterFields]="['ref','type','mode','note']" [filters]="{ 'global': { value: paiementFilter, matchMode: 'contains' } }">
   <ng-template pTemplate="header">
     <tr><th>Réf</th><th>Type</th><th>Montant</th><th>Mode</th><th>Note</th><th>Actions</th></tr>
   </ng-template>
