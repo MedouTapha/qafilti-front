@@ -1,0 +1,81 @@
+:host {
+  display: block;
+  padding: 1rem;
+}
+
+/* Section header (title + add button) */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .75rem;
+}
+
+h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Make PrimeNG table easier to read */
+:host ::ng-deep .p-datatable {
+  border-radius: .5rem;
+  overflow: hidden;
+  background: #000;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-wrapper {
+  overflow: auto; /* small screens */
+}
+
+:host ::ng-deep .p-datatable thead th {
+  background: #f6f7f9;
+  color: #344054;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+  padding: .75rem 1rem;
+}
+
+:host ::ng-deep .p-datatable tbody td {
+  padding: .6rem 1rem;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+/* Space action buttons inside table cells */
+:host ::ng-deep td .p-button + .p-button {
+  margin-left: .5rem;
+}
+
+/* Dialogs */
+:host ::ng-deep .p-dialog .p-dialog-content {
+  padding-top: .75rem;
+}
+
+:host ::ng-deep .p-inputtext {
+  width: 100%;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-footer .p-button + .p-button {
+  margin-left: .5rem;
+}
+
+/* Tabs spacing */
+:host ::ng-deep .p-tablist {
+  margin-bottom: 1rem;
+}
+
+/* Small helpers mapped to HTML utility classes used in template */
+.mb-2 { margin-bottom: .75rem; }
+.m-0 { margin: 0; }
+.flex { display: flex; }
+.align-items-center { align-items: center; }
+.justify-content-between { justify-content: space-between; }
+:host ::ng-deep p-tab{
+  background: darkblue;
+}
+:host ::ng-deep .p-tab-active{
+  background: lightgrey;
+}
+/* Responsive paddings */
+@media (max-width: 768px) {
+  :host { padding: .75rem; }
+}

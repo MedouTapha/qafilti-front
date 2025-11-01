@@ -64,7 +64,7 @@
       </div>
       <p-table [value]="trips()" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
-          <tr><th>ID</th><th>Date</th><th>Trajet</th><th>Départ</th><th>Arrivée</th><th>Bus</th><th>Heures</th><th>Actions</th></tr>
+          <tr><th>ID</th><th>Date</th><th>Trajet</th><th>Départ</th><th>Arrivée</th><th>Bus</th><th>Heures</th><th>Capacité restante</th><th>Actions</th></tr>
         </ng-template>
         <ng-template pTemplate="body" let-t>
           <tr>
@@ -75,6 +75,7 @@
             <td>{{ t.arrivalCityName || t.arrivalCityId }}</td>
             <td>{{ t.vehicleId }}</td>
             <td>{{ t.departureTime }} - {{ t.arrivalTime }}</td>
+            <td>{{ remainingCapacity(t) }}</td>
             <td>
               <button pButton icon="pi pi-pencil" (click)="editTrip(t)"></button>
               <button pButton icon="pi pi-times" severity="danger" (click)="removeTrip(t)"></button>

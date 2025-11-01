@@ -13,6 +13,7 @@ import { TarifsService, Tarif } from '../../core/services/tarifs.service';
 import { BusService, Bus } from '../../core/services/bus.service';
 import { CitiesService, City } from '../../core/services/cities.service';
 import { TripsService, Trip } from '../../core/services/trips.service';
+import { ReservationsService, Reservation } from '../../core/services/reservations.service';
 
 @Component({
   selector: 'app-admin',
@@ -28,6 +29,7 @@ export class AdminComponent implements OnInit {
   private readonly busService = inject(BusService);
   private readonly citiesService = inject(CitiesService);
   private readonly tripsService = inject(TripsService);
+    private readonly reservationsService = inject(ReservationsService);
 
   // Active tab management
   readonly activeTab = signal<number>(0);
@@ -58,6 +60,33 @@ export class AdminComponent implements OnInit {
   readonly buses = this.busService.buses;
   readonly cities = this.citiesService.cities;
   readonly trips = this.tripsService.trips;
+  readonly reservations = this.reservationsService.reservations;
+
+  // Map of confirmed reservations by tripId
+  readonly confirmedByTrip = computed(() => {
+    const map = new Map<string, number>();
+    const list = this.reservations();
+    for (const r of list) {
+      const isConfirmed = r.statut === 'Validée' || r.status === 'CONFIRMED';
+      const tId = r.tripId;
+      if (isConfirmed && tId) {
+        map.set(tId, (map.get(tId) || 0) + 1);
+      }
+    }
+    return map;
+  });
+
+  // Remaining capacity = bus capacity - confirmed reservations
+  remainingCapacity(t: Trip): number {
+    const busId = t.vehicleId;
+    const tripId = t.tripId;
+    if (!busId || !tripId) return 0;
+    const bus = this.buses().find(b => b.id === busId);
+    const capacity = bus?.capacity ?? 0;
+    const confirmed = this.confirmedByTrip().get(tripId) ?? 0;
+    const remaining = capacity - confirmed;
+    return remaining > 0 ? remaining : 0;
+  }
 
   // Dropdown options for forms
   readonly cityOptions = computed(() =>
